@@ -14,14 +14,8 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-      </Routes>
-      <Routes>
         <Route path="/login" element={<LoginPage />} />
-      </Routes>
-      <Routes>
         <Route path="/signup" element={<SignUpPage />} />
-      </Routes>
-      <Routes>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
