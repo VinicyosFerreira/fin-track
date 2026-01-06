@@ -5,7 +5,7 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 
 const PasswordInput = forwardRef(
-  ({ placeholder = 'Digite sua senha', ref, ...props }) => {
+  ({ placeholder = 'Digite sua senha', ...props }, ref) => {
     const [passwordIsVisible, setPasswordIsVisible] = useState(false);
     return (
       <div className="relative">
