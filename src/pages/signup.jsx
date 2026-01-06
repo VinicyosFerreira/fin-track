@@ -1,6 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 import PasswordInput from '@/components/password-input';
@@ -23,6 +26,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import api from '@/lib/axios';
 
 const formSchema = z.object({
   firstName: z.string().trim().min(1, { message: 'O nome é obrigatório' }),
@@ -46,6 +50,21 @@ const formSchema = z.object({
 });
 
 const SignUpPage = () => {
+  const [user, setUser] = useState(null);
+  const signUpMutation = useMutation({
+    mutationKey: ['signup'],
+    mutationFn: async (variables) => {
+      const response = await api.post('/api/users', {
+        first_name: variables.firstName,
+        last_name: variables.lastName,
+        email: variables.email,
+        password: variables.password,
+      });
+
+      return response.data;
+    },
+  });
+
   const methods = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,8 +78,27 @@ const SignUpPage = () => {
   });
 
   const handleSubmit = (data) => {
-    console.log(data);
+    signUpMutation.mutate(data, {
+      onSuccess: (createdUser) => {
+        const accessToken = createdUser.tokens.accessToken;
+        const refreshToken = createdUser.tokens.refreshToken;
+        setUser(createdUser);
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('refreshToken', refreshToken);
+        toast.success('Conta criada com sucesso');
+      },
+      onError: (error) => {
+        console.log('Erro ao criar conta', error);
+        toast.error(
+          'Erro ao criar conta, por favor tente novamente mais tarde'
+        );
+      },
+    });
   };
+
+  if (user) {
+    return <h1>Olá, {user.first_name}</h1>;
+  }
 
   return (
     <div className="mt-5 flex min-h-screen w-full flex-col items-center justify-center gap-3">
@@ -125,7 +163,7 @@ const SignUpPage = () => {
                   <FormItem>
                     <FormLabel>Senha</FormLabel>
                     <FormControl>
-                      <PasswordInput {...field} ref={field.ref} />
+                      <PasswordInput ref={field.ref} {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
