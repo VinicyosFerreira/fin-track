@@ -99,6 +99,8 @@ const SignUpPage = () => {
         });
         setUser(response.data);
       } catch (error) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
         console.log(error);
       }
     };
