@@ -14,6 +14,19 @@ export const AuthContext = createContext({
 // exporta uma função que consome o contexto
 export const useAuthContext = () => useContext(AuthContext);
 
+const ACCESS_TOKEN_KEY = 'accessToken';
+const REFRESH_TOKEN_KEY = 'refreshToken';
+
+const setTokens = (tokens) => {
+  localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
+  localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
+};
+
+const removeTokens = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('refreshToken');
+};
+
 // depois a gente prove o contexto
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -58,8 +71,7 @@ export const AuthContextProvider = ({ children }) => {
         });
         setUser(response.data);
       } catch (error) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
+        removeTokens();
         console.log(error);
       }
     };
@@ -70,11 +82,8 @@ export const AuthContextProvider = ({ children }) => {
   const signup = (data) => {
     signUpMutation.mutate(data, {
       onSuccess: (createdUser) => {
-        const accessToken = createdUser.tokens.accessToken;
-        const refreshToken = createdUser.tokens.refreshToken;
         setUser(createdUser);
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        setTokens(createdUser.tokens);
         toast.success('Conta criada com sucesso');
       },
       onError: (error) => {
@@ -89,11 +98,8 @@ export const AuthContextProvider = ({ children }) => {
   const login = (data) => {
     loginMutation.mutate(data, {
       onSuccess: (loggedUser) => {
-        const accessToken = loggedUser.tokens.accessToken;
-        const refreshToken = loggedUser.tokens.refreshToken;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
         setUser(loggedUser);
+        setTokens(loggedUser.tokens);
         toast.success('Login realizado com sucesso');
       },
       onError: () => {
