@@ -55,7 +55,7 @@ const formSchema = z
   });
 
 const SignUpPage = () => {
-  const { user, signup } = useAuthContext();
+  const { user, signup, isInitializating } = useAuthContext();
   const methods = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,6 +71,8 @@ const SignUpPage = () => {
   const handleSubmit = (data) => {
     signup(data);
   };
+
+  if (isInitializating) return null;
 
   if (user) {
     return <h1>Olá {user.first_name}</h1>;

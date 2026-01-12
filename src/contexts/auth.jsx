@@ -7,6 +7,7 @@ import api from '@/lib/axios';
 // cria o contexto
 export const AuthContext = createContext({
   user: null,
+  isInitializating: true,
   login: () => {},
   signup: () => {},
 });
@@ -30,6 +31,7 @@ const removeTokens = () => {
 // depois a gente prove o contexto
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [isInitializating, setIsInitializating] = useState(true);
 
   const signUpMutation = useMutation({
     mutationKey: ['signup'],
@@ -60,6 +62,7 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const init = async () => {
       try {
+        setIsInitializating(true);
         const accessToken = localStorage.getItem('accessToken');
         const refreshToken = localStorage.getItem('refreshToken');
         if (!accessToken && !refreshToken) return;
@@ -73,6 +76,8 @@ export const AuthContextProvider = ({ children }) => {
       } catch (error) {
         removeTokens();
         console.log(error);
+      } finally {
+        setIsInitializating(false);
       }
     };
 
@@ -111,7 +116,14 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user: user, login: login, signup: signup }}>
+    <AuthContext.Provider
+      value={{
+        user: user,
+        isInitializating: isInitializating,
+        login: login,
+        signup: signup,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
