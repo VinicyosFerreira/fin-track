@@ -1,5 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import api from '@/lib/axios';
@@ -10,6 +10,9 @@ export const AuthContext = createContext({
   login: () => {},
   signup: () => {},
 });
+
+// exporta uma função que consome o contexto
+export const useAuthContext = () => useContext(AuthContext);
 
 // depois a gente prove o contexto
 export const AuthContextProvider = ({ children }) => {
