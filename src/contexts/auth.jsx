@@ -10,6 +10,7 @@ export const AuthContext = createContext({
   isInitializating: true,
   login: () => {},
   signup: () => {},
+  signout: () => {},
 });
 
 // exporta uma função que consome o contexto
@@ -115,6 +116,11 @@ export const AuthContextProvider = ({ children }) => {
     });
   };
 
+  const signout = () => {
+    setUser(null);
+    removeTokens();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -122,11 +128,10 @@ export const AuthContextProvider = ({ children }) => {
         isInitializating: isInitializating,
         login: login,
         signup: signup,
+        signout: signout,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
-
-// depois a gente consome o contexo
