@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constant/local-storage';
 import api from '@/lib/axios';
 
 // cria o contexto
@@ -15,9 +16,6 @@ export const AuthContext = createContext({
 
 // exporta uma função que consome o contexto
 export const useAuthContext = () => useContext(AuthContext);
-
-const ACCESS_TOKEN_KEY = 'accessToken';
-const REFRESH_TOKEN_KEY = 'refreshToken';
 
 const setTokens = (tokens) => {
   localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
@@ -64,15 +62,11 @@ export const AuthContextProvider = ({ children }) => {
     const init = async () => {
       try {
         setIsInitializating(true);
-        const accessToken = localStorage.getItem('accessToken');
-        const refreshToken = localStorage.getItem('refreshToken');
+        const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
+        const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
         if (!accessToken && !refreshToken) return;
 
-        const response = await api.get('api/users/me', {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
+        const response = await api.get('api/users/me');
         setUser(response.data);
       } catch (error) {
         removeTokens();
