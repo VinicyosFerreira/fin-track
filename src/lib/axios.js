@@ -1,12 +1,16 @@
 import axios from 'axios';
 
-import { ACCESS_TOKEN_KEY } from '@/constant/local-storage';
+import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constant/local-storage';
 
-const api = axios.create({
+const publicApi = axios.create({
   baseURL: 'https://fullstackclub-finance-dashboard-api.onrender.com',
 });
 
-api.interceptors.request.use((request) => {
+const protectedApi = axios.create({
+  baseURL: 'https://fullstackclub-finance-dashboard-api.onrender.com',
+});
+
+protectedApi.interceptors.request.use((request) => {
   // buscar o token no localstorage
   const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
 
@@ -18,4 +22,42 @@ api.interceptors.request.use((request) => {
   return request;
 });
 
-export default api;
+protectedApi.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    // verificar se o refresh token existe
+    const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+
+    // se ele nao existir retornar o erro
+    if (!refreshToken) return Promise.reject(error);
+
+    const request = error.config;
+
+    if (
+      error.response.status === 401 &&
+      !request._retry &&
+      !request.url.includes('api/users/refresh-token')
+    ) {
+      request._retry = true;
+      try {
+        const response = await protectedApi.post('/api/users/refresh-token', {
+          refreshToken,
+        });
+
+        const newAccessToken = response.data.accessToken;
+        const newRefreshToken = response.data.refreshToken;
+
+        localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
+        localStorage.setItem(REFRESH_TOKEN_KEY, newRefreshToken);
+
+        return protectedApi(request);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+export { protectedApi, publicApi };
