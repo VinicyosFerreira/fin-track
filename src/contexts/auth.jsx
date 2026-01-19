@@ -3,7 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constant/local-storage';
-import api from '@/lib/axios';
+import { protectedApi, publicApi } from '@/lib/axios';
 
 // cria o contexto
 export const AuthContext = createContext({
@@ -35,7 +35,7 @@ export const AuthContextProvider = ({ children }) => {
   const signUpMutation = useMutation({
     mutationKey: ['signup'],
     mutationFn: async (variables) => {
-      const response = await api.post('/api/users', {
+      const response = await publicApi.post('/api/users', {
         first_name: variables.firstName,
         last_name: variables.lastName,
         email: variables.email,
@@ -49,7 +49,7 @@ export const AuthContextProvider = ({ children }) => {
   const loginMutation = useMutation({
     mutationKey: ['login'],
     mutationFn: async (variables) => {
-      const response = await api.post('api/users/login', {
+      const response = await publicApi.post('api/users/login', {
         email: variables.email,
         password: variables.password,
       });
@@ -66,7 +66,7 @@ export const AuthContextProvider = ({ children }) => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
         if (!accessToken && !refreshToken) return;
 
-        const response = await api.get('api/users/me');
+        const response = await protectedApi.get('api/users/me');
         setUser(response.data);
       } catch (error) {
         removeTokens();
