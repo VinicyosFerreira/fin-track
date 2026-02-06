@@ -53,6 +53,7 @@ export const DatePickerWithRange = ({
           selected={value}
           onSelect={onChange}
           numberOfMonths={2}
+          locale={ptBR}
         />
       </PopoverContent>
     </Popover>
