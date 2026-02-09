@@ -23,7 +23,7 @@ const Header = () => {
       <CardContent className="items-centerpx-8 flex justify-between py-4">
         <img src={logo} alt="FinTrack logo" />
         <DropdownMenu>
-          <DropdownMenuTrigger className="flex items-center space-x-1">
+          <DropdownMenuTrigger className="flex items-center space-x-1" asChild>
             <Button variant="outline">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="https://github.com/shadcn.png" />
