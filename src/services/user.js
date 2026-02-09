@@ -63,6 +63,26 @@ const UserService = {
       email: response.data.email,
     };
   },
+
+  getBalance: async (variables) => {
+    // vamos passar os queries params
+    const queryParams = new URLSearchParams(variables);
+    queryParams.set('from', variables.from);
+    queryParams.set('to', variables.to);
+
+    const url = `api/users/me/balance?${queryParams.toString()}`;
+
+    const response = await protectedApi.get(url);
+    return {
+      earnings: response.data.earnings,
+      expenses: response.data.expenses,
+      investments: response.data.investments,
+      earningsPercentage: response.data.earnings_percentage,
+      expensesPercentage: response.data.expenses_percentage,
+      investmentsPercentage: response.data.investments_percentage,
+      balance: response.data.balance,
+    };
+  },
 };
 
 export { UserService };

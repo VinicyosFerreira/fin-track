@@ -1,6 +1,7 @@
 import { PlusIcon } from 'lucide-react';
 import { Navigate } from 'react-router';
 
+import Balance from '@/components/balance';
 import DataSelection from '@/components/date-selection';
 import Header from '@/components/header';
 import { Button } from '@/components/ui/button';
@@ -20,7 +21,7 @@ const HomePage = () => {
   return (
     <>
       <Header />
-      <div className="p-8">
+      <div className="space-y-6 p-8">
         <div className="flex items-center justify-between">
           <h2 className="text-xl font-bold">Dashboard</h2>
           <div className="flex items-center gap-2">
@@ -30,6 +31,10 @@ const HomePage = () => {
               <PlusIcon className="h-4 w-4" />
             </Button>
           </div>
+        </div>
+
+        <div className="grid grid-cols-[1.7fr,1fr]">
+          <Balance />
         </div>
       </div>
     </>
