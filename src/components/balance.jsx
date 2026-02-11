@@ -35,12 +35,12 @@ const Balance = () => {
         icon={<WalletIcon size={16} />}
       />
       <BalanceItem
-        amount={data.expenses}
+        amount={data.earnings}
         label={'Ganhos'}
         icon={<TrendingUpIcon className="text-primary-green" size={16} />}
       />
       <BalanceItem
-        amount={data.earnings}
+        amount={data.expenses}
         label={'Gastos'}
         icon={<TrendingDownIcon className="text-primary-red" size={16} />}
       />
