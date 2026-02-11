@@ -35,7 +35,12 @@ const DataSelection = () => {
     });
 
     queryClient.invalidateQueries({
-      queryKey: ['balance', user.id],
+      queryKey: [
+        'balance',
+        user.id,
+        queryParams.get('from'),
+        queryParams.get('to'),
+      ],
     });
   }, [date, navigate, queryClient, user.id]);
 

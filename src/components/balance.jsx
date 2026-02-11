@@ -15,13 +15,15 @@ import BalanceItem from './balance-items';
 const Balance = () => {
   const [searchParams] = useSearchParams();
   const { user } = useAuthContext();
+  const from = searchParams.get('from');
+  const to = searchParams.get('to');
 
   const { data } = useQuery({
-    queryKey: ['balance', user.id],
+    queryKey: ['balance', user.id, from, to],
     queryFn: () =>
       UserService.getBalance({
-        from: searchParams.get('from'),
-        to: searchParams.get('to'),
+        from,
+        to,
       }),
   });
 
