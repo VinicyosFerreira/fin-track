@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router';
 
+import { getBalanceQueryKey } from '@/api/hooks/user';
 import { useAuthContext } from '@/contexts/auth';
 
 import { DatePickerWithRange } from './ui/date-picker-with-range';
@@ -56,14 +57,13 @@ const DataSelection = () => {
     });
 
     queryClient.invalidateQueries({
-      queryKey: [
-        'balance',
-        user.id,
-        queryParams.get('from'),
-        queryParams.get('to'),
-      ],
+      queryKey: getBalanceQueryKey({
+        user: user.id,
+        from: queryParams.get('from'),
+        to: queryParams.get('to'),
+      }),
     });
-  }, [date, navigate, queryClient, user.id]);
+  }, [date, navigate, queryClient, user]);
 
   return (
     <div>

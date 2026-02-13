@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import {
   PiggyBankIcon,
   TrendingDownIcon,
@@ -7,24 +6,18 @@ import {
 } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
-import { useAuthContext } from '@/contexts/auth';
-import { UserService } from '@/services/user';
+import { useGetBalance } from '@/api/hooks/user';
 
 import BalanceItem from './balance-items';
 
 const Balance = () => {
   const [searchParams] = useSearchParams();
-  const { user } = useAuthContext();
   const from = searchParams.get('from');
   const to = searchParams.get('to');
 
-  const { data } = useQuery({
-    queryKey: ['balance', user.id, from, to],
-    queryFn: () =>
-      UserService.getBalance({
-        from,
-        to,
-      }),
+  const { data } = useGetBalance({
+    from,
+    to,
   });
 
   if (!data) return null;

@@ -9,6 +9,7 @@ import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
+import { getBalanceQueryKey } from '@/api/hooks/user';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -62,8 +63,9 @@ const AddTransactionDialog = () => {
       return response;
     },
     onSuccess: () => {
+      console.log('Atualizando saldo');
       queryClient.invalidateQueries({
-        queryKey: ['balance', user.id],
+        queryKey: getBalanceQueryKey({ user: user.id }),
       });
     },
   });
