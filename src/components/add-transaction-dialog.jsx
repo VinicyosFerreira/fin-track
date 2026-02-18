@@ -1,6 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogClose } from '@radix-ui/react-dialog';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Loader2Icon, PlusIcon } from 'lucide-react';
 import { PiggyBankIcon, TrendingDownIcon, TrendingUpIcon } from 'lucide-react';
 import { useState } from 'react';
@@ -9,7 +8,7 @@ import { NumericFormat } from 'react-number-format';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { getBalanceQueryKey } from '@/api/hooks/user';
+import { useAddTransaction } from '@/api/hooks/transaction';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -28,8 +27,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { useAuthContext } from '@/contexts/auth';
-import { TransactionService } from '@/services/transaction';
 
 import { DatePicker } from './ui/date-picker';
 import { Input } from './ui/input';
@@ -53,22 +50,8 @@ const formSchema = z.object({
 });
 
 const AddTransactionDialog = () => {
-  const queryClient = useQueryClient();
-  const { user } = useAuthContext();
   const [openDialog, setOpenDialog] = useState(false);
-  const { mutateAsync } = useMutation({
-    mutationKey: ['create-transaction'],
-    mutationFn: async (variables) => {
-      const response = await TransactionService.create(variables);
-      return response;
-    },
-    onSuccess: () => {
-      console.log('Atualizando saldo');
-      queryClient.invalidateQueries({
-        queryKey: getBalanceQueryKey({ user: user.id }),
-      });
-    },
-  });
+  const { mutateAsync } = useAddTransaction();
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
