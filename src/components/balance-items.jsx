@@ -1,4 +1,5 @@
 import { Card, CardContent } from '@/components/ui/card';
+import { formatCurrency } from '@/helpers/currency';
 
 const BalanceItem = ({ amount, icon, label }) => {
   return (
@@ -12,12 +13,7 @@ const BalanceItem = ({ amount, icon, label }) => {
         </div>
 
         <div>
-          <h3 className="text-2xl">
-            {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL',
-            }).format(amount)}
-          </h3>
+          <h3 className="text-2xl">{formatCurrency(amount)}</h3>
         </div>
       </CardContent>
     </Card>
