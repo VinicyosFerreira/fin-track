@@ -1,7 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
-import { z } from 'zod';
+import { Navigate } from 'react-router';
 
 import PasswordInput from '@/components/password-input';
 import { Button } from '@/components/ui/button';
@@ -24,59 +22,15 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useAuthContext } from '@/contexts/auth';
-
-const formSchema = z
-  .object({
-    firstName: z.string().trim().min(1, { message: 'O nome é obrigatório' }),
-    lastName: z
-      .string()
-      .trim()
-      .min(1, { message: 'O sobrenome é obrigatório' }),
-    email: z
-      .string()
-      .email({ message: 'O email é inválido' })
-      .trim()
-      .min(1, { message: 'O email é obrigatório' }),
-    password: z
-      .string()
-      .trim()
-      .min(6, { message: 'A senha deve ter no minímo 6 caracteres' }),
-    confirmPassword: z
-      .string()
-      .trim()
-      .min(6, { message: 'A confirmação de senha é obrigatória' }),
-    terms: z.boolean().refine((value) => value === true, {
-      message: 'Voce precisa aceitar os termos de uso e privacidade',
-    }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'As senhas não se coincidem',
-    path: ['confirmPassword'],
-  });
+import { useSignupForm } from '@/form/hooks/user';
 
 const SignUpPage = () => {
-  const { user, signup, isInitializating } = useAuthContext();
-  const methods = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      terms: false,
-    },
-  });
-
-  const handleSubmit = (data) => {
-    signup(data);
-  };
+  const { user, isInitializating } = useAuthContext();
+  const { methods, handleSubmit } = useSignupForm();
 
   if (isInitializating) return null;
 
-  if (user) {
-    return <h1>Olá {user.first_name}</h1>;
-  }
+  if (user) return <Navigate to="/" />;
 
   return (
     <div className="mt-5 flex min-h-screen w-full flex-col items-center justify-center gap-3">
