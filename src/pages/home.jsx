@@ -4,6 +4,7 @@ import AddTransactionDialog from '@/components/add-transaction-dialog';
 import Balance from '@/components/balance';
 import DataSelection from '@/components/date-selection';
 import Header from '@/components/header';
+import TransactionTable from '@/components/transaction-table';
 import { useAuthContext } from '@/contexts/auth';
 
 const HomePage = () => {
@@ -31,6 +32,9 @@ const HomePage = () => {
 
         <div className="grid grid-cols-[1.7fr,1fr]">
           <Balance />
+        </div>
+        <div>
+          <TransactionTable />
         </div>
       </div>
     </>
