@@ -1,7 +1,13 @@
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { ExternalLinkIcon } from 'lucide-react';
 import { useSearchParams } from 'react-router';
 
 import { useGetTransaction } from '@/api/hooks/transaction';
+import { formatCurrency } from '@/helpers/currency';
 
+import TransactionType from './transaction-type';
+import { Button } from './ui/button';
 import { DataTable } from './ui/data-table';
 
 const columns = [
@@ -12,18 +18,39 @@ const columns = [
   {
     accessorKey: 'type',
     header: 'Tipo',
+    cell: ({ row: { original: transaction } }) => {
+      return (
+        <TransactionType transactionType={transaction.type.toLowerCase()} />
+      );
+    },
   },
   {
     accessorKey: 'date',
     header: 'Data',
+    cell: ({ row: { original: transaction } }) => {
+      const date = new Date(transaction.date);
+      return format(date, "dd 'de' MMMM 'de' yyyy", {
+        locale: ptBR,
+      });
+    },
   },
   {
     accessorKey: 'amount',
     header: 'Valor',
+    cell: ({ row: { original: transaction } }) => {
+      return formatCurrency(transaction.amount);
+    },
   },
   {
     accessorKey: 'actions',
     header: 'Ações',
+    cell: () => {
+      return (
+        <Button variant="icon">
+          <ExternalLinkIcon />
+        </Button>
+      );
+    },
   },
 ];
 
