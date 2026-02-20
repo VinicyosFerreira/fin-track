@@ -16,3 +16,7 @@ export const transactionFormSchema = z.object({
     required_error: 'O tipo da transação é obrigatório',
   }),
 });
+
+export const transactionUpdateFormSchema = z.object().extend({
+  id: z.string().uuid(),
+});
