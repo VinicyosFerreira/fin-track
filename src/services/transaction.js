@@ -18,6 +18,20 @@ const TransactionService = {
     );
     return response.data;
   },
+
+  update: async (variables) => {
+    const response = await protectedApi.patch(
+      `/api/transactions/me/${variables.id}`,
+      {
+        name: variables.name,
+        amount: variables.amount,
+        date: variables.date,
+        type: variables.type,
+      }
+    );
+
+    return response.data;
+  },
 };
 
 export { TransactionService };
