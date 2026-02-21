@@ -1,5 +1,5 @@
 import { z } from 'zod';
-export const transactionFormSchema = z.object({
+export const transactionAddFormSchema = z.object({
   name: z
     .string({
       message: 'O titulo da transação é obrigatório',
@@ -17,6 +17,6 @@ export const transactionFormSchema = z.object({
   }),
 });
 
-export const transactionUpdateFormSchema = z.object().extend({
+export const transactionUpdateFormSchema = transactionAddFormSchema.extend({
   id: z.string().uuid(),
 });
