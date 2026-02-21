@@ -5,9 +5,10 @@ import { useSearchParams } from 'react-router';
 import { useGetTransaction } from '@/api/hooks/transaction';
 import { formatCurrency } from '@/helpers/currency';
 
-import EditTransactionButton from './edit-transaction';
+import EditTransaction from './edit-transaction';
 import TransactionType from './transaction-type';
 import { DataTable } from './ui/data-table';
+import { ScrollArea } from './ui/scroll-area';
 
 const columns = [
   {
@@ -44,7 +45,7 @@ const columns = [
     accessorKey: 'actions',
     header: 'Ações',
     cell: ({ row: { original: transaction } }) => {
-      return <EditTransactionButton transaction={transaction} />;
+      return <EditTransaction transaction={transaction} />;
     },
   },
 ];
@@ -58,7 +59,14 @@ const TransactionTable = () => {
 
   if (!transactions) return null;
 
-  return <DataTable columns={columns} data={transactions} />;
+  return (
+    <>
+      <h2 className="text-lg font-bold">Transações</h2>
+      <ScrollArea className="h-[400px] max-h-[400px]">
+        <DataTable columns={columns} data={transactions} />
+      </ScrollArea>
+    </>
+  );
 };
 
 export default TransactionTable;

@@ -25,11 +25,12 @@ import {
 } from '@/components/ui/sheet';
 import { useEditTransactionForm } from '@/form/hooks/transaction';
 
+import DeleteTransaction from './delete-transaction';
 import { Button } from './ui/button';
 import { DatePicker } from './ui/date-picker';
 import { Input } from './ui/input';
 
-const EditTransactionButton = ({ transaction }) => {
+const EditTransaction = ({ transaction }) => {
   const [openSheet, setOpenSheet] = useState(false);
   const { form, onSubmit } = useEditTransactionForm({
     transaction,
@@ -168,6 +169,8 @@ const EditTransactionButton = ({ transaction }) => {
                 )}
               />
 
+              <DeleteTransaction transaction={transaction} />
+
               <SheetFooter>
                 <SheetClose asChild>
                   <Button
@@ -198,4 +201,4 @@ const EditTransactionButton = ({ transaction }) => {
   );
 };
 
-export default EditTransactionButton;
+export default EditTransaction;

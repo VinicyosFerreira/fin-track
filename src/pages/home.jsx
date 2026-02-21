@@ -33,7 +33,7 @@ const HomePage = () => {
         <div className="grid grid-cols-[1.7fr,1fr]">
           <Balance />
         </div>
-        <div>
+        <div className="space-y-3 rounded-lg bg-card p-4">
           <TransactionTable />
         </div>
       </div>

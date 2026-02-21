@@ -32,6 +32,13 @@ const TransactionService = {
 
     return response.data;
   },
+
+  delete: async (variables) => {
+    const response = await protectedApi.delete(
+      `/api/transactions/me/${variables.id}`
+    );
+    return response.data;
+  },
 };
 
 export { TransactionService };
