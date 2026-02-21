@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router';
 import { useGetTransaction } from '@/api/hooks/transaction';
 import { formatCurrency } from '@/helpers/currency';
 
-import EditTransactionButton from './edit-transaction-button';
+import EditTransactionButton from './edit-transaction';
 import TransactionType from './transaction-type';
 import { DataTable } from './ui/data-table';
 
