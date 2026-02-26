@@ -3,6 +3,7 @@ import { Navigate } from 'react-router';
 import AddTransactionDialog from '@/components/add-transaction-dialog';
 import Balance from '@/components/balance';
 import DataSelection from '@/components/date-selection';
+import FinancialMixChart from '@/components/financial-mix-chart';
 import Header from '@/components/header';
 import TransactionTable from '@/components/transaction-table';
 import { useAuthContext } from '@/contexts/auth';
@@ -30,8 +31,9 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-[1.7fr,1fr]">
+        <div className="grid grid-cols-[1.7fr,1fr] gap-5">
           <Balance />
+          <FinancialMixChart />
         </div>
         <div className="space-y-3 rounded-lg bg-card p-4">
           <TransactionTable />
