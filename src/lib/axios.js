@@ -2,8 +2,6 @@ import axios from 'axios';
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constant/local-storage';
 
-// http://localhost:8080
-
 const publicApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
@@ -11,9 +9,6 @@ const publicApi = axios.create({
 const protectedApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
-
-// john222@example.com"
-// password123
 
 protectedApi.interceptors.request.use((request) => {
   // buscar o token no localstorage
