@@ -55,7 +55,7 @@ const UserService = {
       * @returns {Promise<Object>} The user authenticated
    */
   me: async () => {
-    const response = await protectedApi.get('api/users/me');
+    const response = await protectedApi.get('api/users');
     return {
       id: response.data.id,
       firstName: response.data.first_name,
@@ -70,7 +70,7 @@ const UserService = {
     queryParams.set('from', variables.from);
     queryParams.set('to', variables.to);
 
-    const url = `api/users/me/balance?${queryParams.toString()}`;
+    const url = `api/users/balance?${queryParams.toString()}`;
 
     const response = await protectedApi.get(url);
     return {

@@ -4,7 +4,7 @@ import { protectedApi } from '@/lib/axios';
 
 const TransactionService = {
   create: async (variables) => {
-    const response = await protectedApi.post('/api/transactions/me', variables);
+    const response = await protectedApi.post('/api/transactions', variables);
     return response.data;
   },
   getAll: async (variables) => {
@@ -13,15 +13,13 @@ const TransactionService = {
       to: variables.to,
     });
 
-    const response = await protectedApi.get(
-      `/api/transactions/me?${queryParams}`
-    );
+    const response = await protectedApi.get(`/api/transactions?${queryParams}`);
     return response.data;
   },
 
   update: async (variables) => {
     const response = await protectedApi.patch(
-      `/api/transactions/me/${variables.id}`,
+      `/api/transactions/${variables.id}`,
       {
         name: variables.name,
         amount: variables.amount,
@@ -35,7 +33,7 @@ const TransactionService = {
 
   delete: async (variables) => {
     const response = await protectedApi.delete(
-      `/api/transactions/me/${variables.id}`
+      `/api/transactions/${variables.id}`
     );
     return response.data;
   },

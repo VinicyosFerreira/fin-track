@@ -2,8 +2,7 @@ import axios from 'axios';
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constant/local-storage';
 
-// https://finance-app-api-apje.onrender.com
-// https://finance-app-api-apje.onrender.com
+// http://localhost:8080
 
 const publicApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -12,6 +11,9 @@ const publicApi = axios.create({
 const protectedApi = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
+
+// john222@example.com"
+// password123
 
 protectedApi.interceptors.request.use((request) => {
   // buscar o token no localstorage
@@ -44,11 +46,11 @@ protectedApi.interceptors.response.use(
       request._retry = true;
       try {
         const response = await protectedApi.post('/api/users/refresh-token', {
-          refreshToken,
+          refresh_token: refreshToken,
         });
 
-        const newAccessToken = response.data.accessToken;
-        const newRefreshToken = response.data.refreshToken;
+        const newAccessToken = response.data.access_token;
+        const newRefreshToken = response.data.refresh_token;
 
         localStorage.setItem(ACCESS_TOKEN_KEY, newAccessToken);
         localStorage.setItem(REFRESH_TOKEN_KEY, newRefreshToken);

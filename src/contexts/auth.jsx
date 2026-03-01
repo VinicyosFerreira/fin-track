@@ -18,8 +18,8 @@ export const AuthContext = createContext({
 export const useAuthContext = () => useContext(AuthContext);
 
 const setTokens = (tokens) => {
-  localStorage.setItem(ACCESS_TOKEN_KEY, tokens.accessToken);
-  localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refreshToken);
+  localStorage.setItem(ACCESS_TOKEN_KEY, tokens.access_token);
+  localStorage.setItem(REFRESH_TOKEN_KEY, tokens.refresh_token);
 };
 
 const removeTokens = () => {
@@ -75,6 +75,7 @@ export const AuthContextProvider = ({ children }) => {
   const login = (data) => {
     loginMutation.mutate(data, {
       onSuccess: (loggedUser) => {
+        console.log(loggedUser);
         setUser(loggedUser);
         setTokens(loggedUser.tokens);
         toast.success('Login realizado com sucesso');
