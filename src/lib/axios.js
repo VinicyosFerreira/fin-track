@@ -2,12 +2,15 @@ import axios from 'axios';
 
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from '@/constant/local-storage';
 
+// https://finance-app-api-apje.onrender.com
+// https://finance-app-api-apje.onrender.com
+
 const publicApi = axios.create({
-  baseURL: 'https://fullstackclub-finance-dashboard-api.onrender.com',
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 const protectedApi = axios.create({
-  baseURL: 'https://fullstackclub-finance-dashboard-api.onrender.com',
+  baseURL: import.meta.env.VITE_API_URL,
 });
 
 protectedApi.interceptors.request.use((request) => {
